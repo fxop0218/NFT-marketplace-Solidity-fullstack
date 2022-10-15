@@ -21,10 +21,19 @@ const networkConfig = {
 const DECIMALS = "18"
 const INITIAL_PRICE = "200000000000000000000"
 const developmentChains = ["hardhat", "localhost"]
+const frontEndContractsFile = "./constants/networkMapping.json"
+const frontEndAbiLocation = "./constants/"
+
+const NFT_MARKET = "NftMarketplace"
+const BASIC_NFT = "BasicNft"
 
 module.exports = {
     networkConfig,
     developmentChains,
     DECIMALS,
     INITIAL_PRICE,
+    frontEndContractsFile,
+    frontEndAbiLocation,
+    BASIC_NFT,
+    NFT_MARKET,
 }

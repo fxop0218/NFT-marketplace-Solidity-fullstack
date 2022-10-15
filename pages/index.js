@@ -1,9 +1,12 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { ethers } from "ethers"
+import { useEffect, useState } from "react"
+import { axios } from "axios"
+import Web3Modal from "Web3Modal"
 
 export default function Home() {
-  return (
-   <h2></h2>
-  )
+    return (
+        <div>
+            <h2>Home page</h2>
+        </div>
+    )
 }
