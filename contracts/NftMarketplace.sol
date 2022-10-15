@@ -12,16 +12,8 @@ error NftMarketplace__InsufficientAmountToWithdraw();
 error NftMarketplace__InsufficientPrice();
 error NftMarketplace__NoApprovedNft();
 error NftMarketplace__WithdrawError();
-error NftMarketplace__YourProperty(
-    address nftAddress,
-    uint256 tokenId,
-    address seller
-);
-error NftMarketplace__PriceNotMet(
-    address nftAddress,
-    uint256 tokenId,
-    uint256 price
-);
+error NftMarketplace__YourProperty(address nftAddress, uint256 tokenId, address seller);
+error NftMarketplace__PriceNotMet(address nftAddress, uint256 tokenId, uint256 price);
 
 contract NftMarketplace is ReentrancyGuard {
     // listNft ✔
@@ -51,11 +43,7 @@ contract NftMarketplace is ReentrancyGuard {
         uint256 price
     );
 
-    event ItemCancelled(
-        address indexed owner,
-        address indexed nftAddress,
-        uint256 indexed tokenId
-    );
+    event ItemCancelled(address indexed owner, address indexed nftAddress, uint256 indexed tokenId);
 
     // Struct
     struct Listing {
@@ -108,7 +96,7 @@ contract NftMarketplace is ReentrancyGuard {
         uint256 tokenId,
         uint256 price
     )
-        public
+        external
         isOwner(nftAddress, tokenId, msg.sender)
         isNotListed(nftAddress, tokenId, msg.sender)
     {
@@ -119,7 +107,7 @@ contract NftMarketplace is ReentrancyGuard {
 
         // Create ERC721
         IERC721 nft = IERC721(nftAddress); //https://docs.openzeppelin.com/contracts/3.x/api/token/erc721
-        if (nft.getApproved(tokenId) != msg.sender) {
+        if (nft.getApproved(tokenId) != address(this)) {
             revert NftMarketplace__NoApprovedNft();
         }
         s_nftList[nftAddress][tokenId] = Listing(price, msg.sender);
@@ -137,11 +125,7 @@ contract NftMarketplace is ReentrancyGuard {
         // the buyer cannot be the same as the seller
         Listing memory list = s_nftList[nftAddress][tokenId];
         if (list.seller == msg.sender) {
-            revert NftMarketplace__YourProperty(
-                nftAddress,
-                tokenId,
-                msg.sender
-            );
+            revert NftMarketplace__YourProperty(nftAddress, tokenId, msg.sender);
         }
         // value can't bee menor that price
         if (list.price > msg.value) {
@@ -170,11 +154,7 @@ contract NftMarketplace is ReentrancyGuard {
         address nftAddress,
         uint256 tokenId,
         uint256 newPrice
-    )
-        external
-        isOwner(nftAddress, tokenId, msg.sender)
-        isListed(nftAddress, tokenId)
-    {
+    ) external isOwner(nftAddress, tokenId, msg.sender) isListed(nftAddress, tokenId) {
         if (newPrice <= 0) {
             revert NftMarketplace__InsufficientPrice();
         }
