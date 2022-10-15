@@ -164,7 +164,7 @@ or use openzeppelin
         emit ItemList(msg.sender, nftAddress, tokenId, newPrice);
     }
 
-    function withdrawc() external nonReentrant {
+    function withdraw() external nonReentrant {
         uint256 proceeds = s_proceeds[msg.sender];
         if (proceeds <= 0) {
             revert NftMarketplace__NoProceeds();
