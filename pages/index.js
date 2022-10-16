@@ -1,30 +1,28 @@
-import { useEffect, useState } from "react"
-import { axios } from "axios"
-import Web3Modal from "Web3Modal"
+import { signIn, useSession } from "next-auth/react"
+import { useAccount, useSignMessage, useNetwork } from "wagmi"
+import { useEffect } from "react"
+import { useRouter } from "next/router"
+import axios from "axios"
 //import { network } from "hardhat"
 
 export default function Home() {
-    /*
-    const chainId = network.config.chainId
-    const [nfts, setNfts] = useState([])
-    const [loadingState, setLoadingState] = useState("not-loaded")
+    const { isConnected, address } = useAccount()
+    const { chain } = useNetwork()
+    const { status } = useSession()
+    const { signMessageAsync } = useSignMessage()
+    const { push } = useRouter()
 
-    useEffect(() => {
-        loadNft()
-    }, [])
-    async function loadNft() {
-        const provider = new ethers.providers.JsonRpcProvider()
-        const marketContract = new ethers.Contract(
-            marketAddress[chainId]["NftMarketplace"],
-            Market,
-            provider 
-        )
-        const data = await marketContract.fetch
-    }
-    */
+    console.log(`Network: ${chain.id}`)
+
     return (
         <div>
-            <h2>Home page</h2>
+            {isConnected ? (
+                <h1>
+                    Wallet address: {address} in {chain.name} ({chain.id}) network
+                </h1>
+            ) : (
+                <h1>Connect your wallet</h1>
+            )}
         </div>
     )
 }

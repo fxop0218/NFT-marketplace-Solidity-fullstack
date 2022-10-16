@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { ConnectWallet } from "@thirdweb-dev/react"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
+import "@rainbow-me/rainbowkit/styles.css"
 
 export default function Header() {
     return (
@@ -21,7 +22,7 @@ export default function Header() {
                     </a>
                 </Link>
                 <div className="mr-4">
-                    <ConnectWallet accentColor="#55BBD4" colorMode="dark" />
+                    <ConnectButton />
                 </div>
             </div>
         </nav>
